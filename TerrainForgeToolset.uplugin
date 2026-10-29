@@ -1,0 +1,36 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1.0",
+  "FriendlyName": "TerrainForgeToolset",
+  "Description": "Typed agent adapter to TerrainForge graph authoring, generation, GIS and export core.",
+  "Category": "Automation Forge",
+  "CreatedBy": "Bojan Andrejek",
+  "CreatedByURL": "https://kovati.dev",
+  "DocsURL": "https://github.com/AutomationForgeHQ/TerrainForgeToolset",
+  "SupportURL": "https://github.com/AutomationForgeHQ/TerrainForgeToolset/issues",
+  "CanContainContent": true,
+  "EditorOnly": true,
+  "EnabledByDefault": false,
+  "IsExperimentalVersion": true,
+  "Modules": [
+    {
+      "Name": "TerrainForgeToolset",
+      "Type": "Editor",
+      "LoadingPhase": "PostEngineInit",
+      "TargetAllowList": [
+        "Editor"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "TerrainForge",
+      "Enabled": true
+    },
+    {
+      "Name": "ToolsetRegistry",
+      "Enabled": true
+    }
+  ]
+}
