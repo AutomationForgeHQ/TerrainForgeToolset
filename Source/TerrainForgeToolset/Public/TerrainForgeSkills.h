@@ -16,7 +16,7 @@ public:
             "Range heights add relief, while a plateau or valley height is an absolute target altitude. "
             "Basins subtract depth from the surrounding land. Keep room in the vertical range for overlapping ranges. "
             "Start from the two-basin example and a low simulation resolution before increasing detail. "
-            "To start from a tuned graph instead, call List Presets, then Create Definition From Preset (or Apply Preset on an existing definition); alpine-eroded is the native alpine preset (4 km at 4033) and alpine-eroded-8k its 8 km layout at 8129. "
+            "To start from a tuned graph instead, call List Presets, then Create Definition From Preset (or Apply Preset on an existing definition); alpine-eroded is the native alpine preset (4 km at 4033) and alpine-eroded-8k its 8 km layout at 8129; both need TerrainForge Full, and in Lite the classic presets open as the same terrain scaled to 2 km. "
             "Applying a preset replaces the graph and recipe, keeps embedded sources and clears GIS provenance. "
             "Realism nodes: Geology builds a layered rock volume that a downstream Erode samples; Erode grade (0 keeps old graphs, 0.5 for new work) smooths pocked valley floors; "
             "Scree execution parallel is the fast mode and headTaper softens the straight head line of fresh aprons; Gullies adds fine incision in the gully band; "
@@ -52,7 +52,9 @@ public:
             "Measured on one high-end laptop GPU, a full 4033 take of the alpine preset took about 79 s with Auto against 233 s with CPU Only, and Erode and Hydraulic at 4033 ran about 7 to 10 times faster on the GPU; other cards differ, so quote these as measurements, not promises. "
             "Native builds run inside the editor; they stop if the editor closes and cannot be reconnected, so start them again. "
             "A changed recipe makes previous results stale. "
-            "Save the recipe after generation to keep the selected take across editor restarts.");
+            "Save the recipe after generation to keep the selected take across editor restarts. "
+            "TerrainForge runs in one of two tiers. Without a licence it is Lite: a build, Import New Level or Export Assets of more than 1009 x 1009 samples or of a world wider than 2 km is refused with one sentence (never downscaled), a preview above 1009 is computed at 1009, and every node runs on the CPU whatever the Compute setting or a node's compute param say. "
+            "With a licence (Full) nothing is limited. Validate Recipe reports the Lite sentence; Set Recipe still accepts the recipe, so bring Resolution and SizeM under the limits and build again.");
     }
 };
 UCLASS()
@@ -151,7 +153,7 @@ public:
             "Supported centres are within 80 degrees latitude; the Mercator source cannot cover polar terrain. "
             "Discovery, assessment, imports and level builds run natively inside the editor and need internet access to the data providers they list: national and global elevation services, ESA WorldCover land cover and the OpenStreetMap Overpass API, whose endpoint can be changed in the TerrainForge GIS settings. "
             "Discover supported datasets before choosing them. "
-            "To decide whether a place can become a level, call AssessGIS first: it reports per requirement native, partial, absent or missing data, the generated fill for each gap and a verdict; then CreateLevelProject with the same profile builds and adopts the project (1 m grid, 2017 or 4033 samples). "
+            "To decide whether a place can become a level, call AssessGIS first: it reports per requirement native, partial, absent or missing data, the generated fill for each gap and a verdict; then CreateLevelProject with the same profile builds and adopts the project (1 m grid, 1009, 2017 or 4033 samples; TerrainForge Lite builds 1009, a 1008 m level). "
             "Both follow a requirement profile: game_level ships with the plugin and paints Snow, Rocks, Scree, Meadow, Wetland, Soil, Forest and Water; a project adds or overrides profiles with JSON files, and ListGISProfiles lists the ids, their requirements and any file that failed to load. "
             "Planned tile coverage is not proof of elevation survey precision; source spacing, date and vertical datum vary. "
             "Raster resampling adds no measured detail. OpenStreetMap is incomplete: unmapped is different from absent. "

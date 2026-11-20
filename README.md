@@ -1,6 +1,6 @@
 # TerrainForgeToolset
 
-<!-- forge:version -->**Version 0.1.0. Preview.**<!-- /forge:version --> Free and open source, Apache-2.0.
+<!-- forge:version -->**Version 0.1.1. Preview.**<!-- /forge:version --> Free and open source, Apache-2.0.
 
 Agent access to TerrainForge through Unreal Engine 5.8's toolset registry. An MCP client can build a terrain the way
 a person does in the editor: start from a preset, edit the graph, preview nodes, build, bring in real-world data,
@@ -12,7 +12,10 @@ call, so an agent and a person can work on the same definition.
 ## Requirements
 
 - Unreal Engine 5.8, editor only.
-- **TerrainForge 0.1.0**, the paid plugin this toolset drives (free during its preview).
+- **TerrainForge 0.2.0 or later**, the plugin this toolset drives. TerrainForge is a paid product with a free Lite
+  tier, installed through the Kovati Hub. The toolset has no tiers of its own: in Lite, TerrainForge refuses a build,
+  import or export over 1009 x 1009 samples or 2 km x 2 km and runs every node on the CPU, and the tools pass on its
+  reason. See TerrainForge's README for Lite and Full.
 - The engine's **ToolsetRegistry** plugin, which this plugin enables. To reach the tools from an MCP client, also
   enable the engine's **Model Context Protocol** plugin.
 - Internet access only for the GIS tools.
@@ -67,10 +70,10 @@ function's own doc comment, which is also the description an agent reads.
 answers at once. Parameters and results are reflected structs, so the schema an agent reads is the signature.
 
 Builds follow the TerrainForge Native Engine settings. The compute default is **Auto**: nodes with a GPU kernel run
-on the GPU, with a CPU fallback, and everything else on the CPU.
+on the GPU, with a CPU fallback, and everything else on the CPU. In TerrainForge Lite every node runs on the CPU.
 
-`ImportNewLevel` takes up to 8129 samples, with Nanite up to 4033. Larger takes import through TerrainForge's
-headless `TerrainForgeImport` commandlet.
+`ImportNewLevel` takes up to 8129 samples, with Nanite up to 4033, in TerrainForge Full (1009 in Lite). Larger takes
+import through TerrainForge's headless `TerrainForgeImport` commandlet.
 
 ## Deliberately absent
 
@@ -99,4 +102,5 @@ a level project.
 
 ## Licence
 
-Apache-2.0, in [LICENSE](LICENSE). TerrainForge itself is a paid plugin under its own licence.
+Apache-2.0, in [LICENSE](LICENSE). TerrainForge itself is a paid product, with a free Lite tier, under its own
+licence.

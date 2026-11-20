@@ -8,6 +8,24 @@ Headings are `## <x.y.z> — <date>`. Use `Added` / `Changed` / `Fixed` / `Compa
 `Known issues`, only the ones that apply. A version that has not shipped says `unreleased`
 in place of the date; set the date when it is tagged.
 
+## 0.1.1 — 2026-11-20
+
+Released with TerrainForge 0.2.0, which adds the Lite and Full tiers. The toolset itself has no tiers and stays free
+and open source: in Lite, TerrainForge refuses what is over the limits, and the tools now pass on its reason.
+
+### Fixed
+- **Generate Terrain and Import New Level return the reason** a build or an import could not start (a TerrainForge
+  Lite limit, a graph error, an unsaved map, ...), as TerrainForge reports it, in place of a general sentence.
+- **Export Assets says its reason once**, not twice.
+- **Create Definition From Preset creates no asset** when TerrainForge cannot open the preset.
+
+### Changed
+- **The agent skills say what Lite allows**, so an agent plans a terrain that the running tier can build.
+
+### Compatibility
+- **Needs TerrainForge 0.2.0 or later.** It calls TerrainForge's preset check and reads the import result's error,
+  which 0.1.0 does not have.
+
 ## 0.1.0 — 2026-10-29
 
 **The first release**, alongside the TerrainForge 0.1.0 preview. Agent access to TerrainForge through Unreal Engine

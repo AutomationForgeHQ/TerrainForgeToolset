@@ -58,4 +58,5 @@ TArray<FString> UTerrainForgeToolset::ListArtifacts(const FString& P){auto* C=Co
 FTerrainExportSettings UTerrainForgeToolset::GetExportSettings(const FString& P){auto* D=Def(P);return D?D->ExportSettings:FTerrainExportSettings();}
 bool UTerrainForgeToolset::SetExportSettings(const FString& P,const FString& R,const FTerrainExportSettings& S){auto* C=Core();return C&&C->SetExportSettings(Def(P),R,S);}
 TArray<FString> UTerrainForgeToolset::ValidateExport(const FString& P){auto* C=Core();return C?C->ValidateExport(Def(P)):TArray<FString>{TEXT("Core unavailable.")};}
-FTerrainExportResult UTerrainForgeToolset::ExportAssets(const FString& P){auto* C=Core();if(!C)return {};auto R=C->ExportAssets(Def(P));if(!R.Warnings.IsEmpty())UTerrainForgeSubsystem::Fail(FString::Join(R.Warnings,TEXT("\n"))+TEXT(" Inspect the new export folder and Output Log before retrying."));return R;}
+// The core raises the reason once (refusal or write failure) and returns it in Warnings; nothing is added here.
+FTerrainExportResult UTerrainForgeToolset::ExportAssets(const FString& P){auto* C=Core();if(!C)return {};return C->ExportAssets(Def(P));}

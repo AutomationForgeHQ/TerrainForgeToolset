@@ -17,9 +17,9 @@ TArray<FTerrainPresetInfo> UTerrainForgeToolset::ListPresets()
 {FString Error;auto Presets=UTerrainForgePresetLibrary::ListPresets(Error);if(Presets.IsEmpty())UTerrainForgeSubsystem::Fail(Error.IsEmpty()?FString(TEXT("No presets available. Enable the TerrainForge Native module.")):Error);return Presets;}
 FString UTerrainForgeToolset::CreateDefinitionFromPreset(const FString& Path,const FString& PresetId)
 {
-    // Resolve first, so an unknown id or an unreadable preset creates no asset.
-    FTerrainGraphData Graph;FTerrainRecipe Recipe;FTerrainPresetInfo Info;FString Error;
-    if(!UTerrainForgePresetLibrary::ResolvePreset(PresetId,Graph,Recipe,Info,Error)){UTerrainForgeSubsystem::Fail(Error);return FString();}
+    // Check first, so an unknown id, an unreadable preset or one this installation cannot open creates no asset.
+    FString Error;
+    if(!UTerrainForgePresetLibrary::CheckPreset(PresetId,Error)){UTerrainForgeSubsystem::Fail(Error);return FString();}
     auto* Def=API()?API()->CreateDefinition(Path,false):nullptr;if(!Def)return FString();
     if(!UTerrainForgePresetLibrary::ApplyPreset(Def,PresetId,false,Error))
     {UTerrainForgeSubsystem::Fail(Error+TEXT(" The new definition keeps the starter graph; call Apply Preset after fixing the cause."));return FString();}
@@ -44,7 +44,13 @@ void UTerrainForgeToolset::OpenDefinition(const FString& Path){API()->OpenDefini
 UToolCallAsyncResultTerrain* UTerrainForgeToolset::GenerateTerrain(const FString& Path,const FString& ThroughPass,bool bResume)
 {
     auto* Def=Definition(Path);auto* Result=NewObject<UToolCallAsyncResultTerrain>();
-    if(!Def||!API()->StartGeneration(Def,ThroughPass,bResume)){Result->SetError(TEXT("Generation could not start. Call Validate Recipe and Validate Graph, then Get Status."));return Result;}
+    if(!Def){Result->SetError(TEXT("Terrain recipe not found. Call List Definitions or Create Definition."));return Result;}
+    if(!API()->StartGeneration(Def,ThroughPass,bResume))
+    {
+        // The core keeps the reason it refused where Get Status reads it; pass it on as it is.
+        const FString Why=API()->GetStatus(Def).Error;
+        Result->SetError(Why.IsEmpty()?FString(TEXT("Generation could not start. Call Validate Recipe and Validate Graph, then Get Status.")):Why);return Result;
+    }
     Result->AddToRoot();auto Keep=MakeShared<TStrongObjectPtr<UTerrainDef>>(Def);double Started=FPlatformTime::Seconds();
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Result,Keep,Started](float)
     {
@@ -64,7 +70,8 @@ UToolCallAsyncResultTerrainImport* UTerrainForgeToolset::ImportNewLevel(const FS
     FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Result,Keep,LevelPath,bNanite](float)
     {
         auto Value=API()->ImportNewLevel(Keep->Get(),LevelPath,bNanite);
-        if(Value.LandscapePath.IsEmpty())Result->SetError(TEXT("Import failed. Check recipe status, preview, unused level path and Output Log before Import New Level."));
+        // The core returns why an import failed; pass it on as it is.
+        if(Value.LandscapePath.IsEmpty())Result->SetError(Value.Error.IsEmpty()?FString(TEXT("Import failed. Check recipe status, preview, unused level path and Output Log before Import New Level.")):Value.Error);
         else Result->SetValue(Value);
         Result->RemoveFromRoot();return false;
     }));return Result;
