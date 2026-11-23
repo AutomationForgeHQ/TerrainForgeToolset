@@ -1,3 +1,10 @@
+<!-- kovati:header -->
+<p align="center"><a href="https://kovati.dev/tools/terrainforge/"><img src="https://raw.githubusercontent.com/AutomationForgeHQ/.github/main/profile/assets/terrainforge.jpg" width="100%" alt="TerrainForge, part of Kovati" /></a></p>
+
+<p align="center"><b>Agent toolset for TerrainForge</b> · Part of <a href="https://kovati.dev"><b>Kovati</b></a>, production tools for Unreal games · <a href="https://kovati.dev/worldbuilding/">Worldbuilding</a><br />
+<a href="https://kovati.dev/tools/terrainforge/">Product page</a> · <a href="https://docs.kovati.dev">Documentation</a> · <a href="https://kovati.dev/download/">Install with the Kovati Hub</a> · <a href="https://kovati.dev/discord">Discord</a></p>
+<!-- /kovati:header -->
+
 # TerrainForgeToolset
 
 <!-- forge:version -->**Version 0.1.1. Preview.**<!-- /forge:version --> Free and open source, Apache-2.0.
